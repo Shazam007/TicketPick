@@ -2,6 +2,7 @@ import express from "express";
 import axios from "axios";
 import { json } from "body-parser";
 import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandling";
 
 //import routes
 import { signInRouter } from "./routes/signin";
@@ -23,6 +24,9 @@ app.use(signInRouter);
 app.use(signUpRouter);
 app.use(signOutRouter);
 app.use(currentUserRouter);
+
+//error handling custom middleware
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("auth listening on port 3000!");

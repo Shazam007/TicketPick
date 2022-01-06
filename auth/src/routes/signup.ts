@@ -19,7 +19,7 @@ router.post(
 
     if (!errors.isEmpty()) {
       //there are errors
-      return res.status(400).send(errors.array());
+      throw new Error("Email is not valid");
     }
 
     res.send("user succefully added");
