@@ -8,6 +8,8 @@ export const errorHandler = (
   next: express.NextFunction
 ) => {
   if (err instanceof RequestValidationError) {
-    res.status(400).send({ Error: err.message });
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
+
+  res.status(400).send({ errors: [{ message: "something went wrong" }] });
 };
