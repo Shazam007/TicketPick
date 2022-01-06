@@ -2,6 +2,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("api/user/signup", (req, res) => {});
+router.post("api/users/signout", (req, res) => {});
 
-export { router as signUpRouter };
+export { router as signOutRouter };
