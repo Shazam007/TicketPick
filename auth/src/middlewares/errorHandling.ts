@@ -1,4 +1,5 @@
 import express from "express";
+import { RequestValidationError } from "../errors/requestValidationError";
 
 export const errorHandler = (
   err: Error,
@@ -6,5 +7,7 @@ export const errorHandler = (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  res.status(400).send({ Error: err.message });
+  if (err instanceof RequestValidationError) {
+    res.status(400).send({ Error: err.message });
+  }
 };
