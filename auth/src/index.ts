@@ -5,6 +5,8 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandling";
 import { RouteNotFoundError } from "./errors/routeNotFoundError";
 import "express-async-errors";
+import mongoose from "mongoose";
+
 //import routes
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
@@ -17,10 +19,6 @@ const app = express();
 app.use(json());
 app.use(cors());
 
-// app.get("/api/users/currentuser", (req, res) => {
-//   res.send("now workinsadsg latsdaest");
-// });
-
 app.use(signInRouter);
 app.use(signUpRouter);
 app.use(signOutRouter);
@@ -32,6 +30,18 @@ app.all("*", async () => {
 
 //error handling custom middleware
 app.use(errorHandler);
+
+//top level mongo await only allowed in latest ts
+const startDB = async () => {
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017");
+    console.log("succefully connected to mongo db auth");
+  } catch (error) {
+    console.log("error connecting with mongo db");
+  }
+};
+
+startDB();
 
 app.listen(3000, () => {
   console.log("auth listening on port 3000!");
