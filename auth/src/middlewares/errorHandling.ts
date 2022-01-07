@@ -1,5 +1,5 @@
 import express from "express";
-import { RequestValidationError } from "../errors/requestValidationError";
+import { CustomError } from "../errors/customError";
 
 export const errorHandler = (
   err: Error,
@@ -7,7 +7,7 @@ export const errorHandler = (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  if (err instanceof RequestValidationError) {
+  if (err instanceof CustomError) {
     return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 

@@ -3,7 +3,8 @@ import axios from "axios";
 import { json } from "body-parser";
 import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandling";
-
+import { RouteNotFoundError } from "./errors/routeNotFoundError";
+import "express-async-errors";
 //import routes
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
@@ -24,6 +25,10 @@ app.use(signInRouter);
 app.use(signUpRouter);
 app.use(signOutRouter);
 app.use(currentUserRouter);
+
+app.all("*", async () => {
+  throw new RouteNotFoundError();
+});
 
 //error handling custom middleware
 app.use(errorHandler);
