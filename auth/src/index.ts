@@ -34,7 +34,7 @@ app.use(errorHandler);
 //top level mongo await only allowed in latest ts
 const startDB = async () => {
   try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017");
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("succefully connected to mongo db auth");
   } catch (error) {
     console.log("error connecting with mongo db");

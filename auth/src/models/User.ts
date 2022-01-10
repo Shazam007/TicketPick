@@ -17,16 +17,19 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  { collection: "authUsers" }
+);
 
 //for ts validation
 userSchema.statics.build = (types: UserTypes) => {
@@ -34,6 +37,28 @@ userSchema.statics.build = (types: UserTypes) => {
 };
 
 //<any, UserModel> for ts validation
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
+const User = mongoose.model<UserDoc, UserModel>("Users", userSchema, "Users");
 
 export { User };
+
+// import mongoose from "mongoose";
+
+// interface userTypes {
+//   email: string;
+//   password: string;
+// }
+
+// const userSchema = new mongoose.Schema<userTypes>({
+//   email: {
+//     type: String,
+//     required: true,
+//   },
+//   password: {
+//     type: String,
+//     required: true,
+//   },
+// });
+
+// const User = mongoose.model<userTypes>("Users", userSchema, "Users");
+
+// export { User };
