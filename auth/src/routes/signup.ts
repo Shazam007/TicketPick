@@ -46,7 +46,7 @@ router.post(
           id: createdUser._id,
           email: createdUser.email,
         },
-        "qwerty"
+        process.env.JWT_KEY!
       );
 
       //store it in cookie --> can use req.session.jwt = userjwt but this is ts and it requires the definition

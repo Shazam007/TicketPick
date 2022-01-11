@@ -52,6 +52,11 @@ const startDB = async () => {
   }
 };
 
+//check env variables exist
+if (!process.env.JWT_KEY) {
+  throw new Error("env variables are not defined");
+}
+
 startDB();
 
 app.listen(3000, () => {
