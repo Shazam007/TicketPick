@@ -3,6 +3,8 @@ import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/requestValidationError";
 import { BadRequestError } from "../errors/badRequestError";
 import { User } from "../models/User";
+import { PasswordManager } from "../services/passwordManager";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -24,17 +26,34 @@ router.post(
     }
 
     //get body data
-    const { email, password } = req.body;
+    const { email } = req.body;
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       throw new BadRequestError("User Already Exists");
     }
 
+    const hashedPassword = await PasswordManager.toHash(req.body.password);
+
     try {
       const createdUser = await User.create({
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
       });
+
+      //generate the jwt
+      const userJwt = jwt.sign(
+        {
+          id: createdUser._id,
+          email: createdUser.email,
+        },
+        "qwerty"
+      );
+
+      //store it in cookie --> can use req.session.jwt = userjwt but this is ts and it requires the definition
+      req.session = {
+        jwt: userJwt,
+      };
+
       res.status(201).send(createdUser);
     } catch (err) {
       res.json({ status: "Error", error: err });

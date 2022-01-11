@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorHandling";
 import { RouteNotFoundError } from "./errors/routeNotFoundError";
 import "express-async-errors";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 
 //import routes
 import { signInRouter } from "./routes/signin";
@@ -14,10 +15,20 @@ import { signUpRouter } from "./routes/signup";
 import { currentUserRouter } from "./routes/currentUser";
 
 const app = express();
+//https
+app.set("trust proxy", true);
 
 // app.use(express.json());
 app.use(json());
 app.use(cors());
+
+//creating the cookie
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  })
+);
 
 app.use(signInRouter);
 app.use(signUpRouter);
